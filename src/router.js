@@ -1,6 +1,7 @@
 import VueRouter from 'vue-router';
 import Home from './views/Home.vue';
-import watchlist from './views/Watchlist.vue';
+import Watchlist from './views/Watchlist.vue';
+import Search from './views/Search.vue';
 
 const routes = [
   {
@@ -11,7 +12,12 @@ const routes = [
   {
     path: '/watchlist',
     name: 'watchlist',
-    component: watchlist,
+    component: Watchlist,
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: Search,
   },
 ];
 
