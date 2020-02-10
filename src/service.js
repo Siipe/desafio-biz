@@ -13,24 +13,37 @@ instance.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error));
 
-const prepareMovieObjects = (data) => {
-  const newData = data;
-  newData.results = newData.results.map((movie) => new Movie(movie));
-  return newData;
+/**
+ * Converts each retrieved movie to an instance of the Movie class
+ * @param {array} movies
+ * @returns {Movie[]}
+ */
+const prepareMovieObjects = (movies = []) => {
+  return movies.map((movie) => new Movie(movie))
 }
 
+/**
+ * Searches for most popular movies
+ * @returns {object}
+ */
 const getPopular = async () => {
   const result = await instance.get('movie/popular');
-  return prepareMovieObjects(result.data);
+  result.data.results = prepareMovieObjects(result.data.results);
+  return result.data;
 }
 
-const search = async () => {
-  const params = new URLSearchParams({ query: 'John Wick' });
+/**
+ * Searches for movies by the given params
+ * @returns {object}
+ */
+const search = async (params) => {
   const result = await instance.get('search/movie', { params });
-  return prepareMovieObjects(result.data);
+  result.data.results = prepareMovieObjects(result.data.results);
+  return result.data;
 }
 
 export default {
   getPopular,
   search,
+  prepareMovieObjects,
 };
