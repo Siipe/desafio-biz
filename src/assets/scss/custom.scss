@@ -1,7 +1,23 @@
 $theme-colors: (
-  "biz-navbar": #FFF,
+  'biz-navbar': #FFF,
+  'fav-star-checked': #DE963B,
+  'fav-star-unchecked': #AAA,
 );
 
 $body-bg: #F9F9F9;
 
-@import "node_modules/bootstrap/scss/bootstrap";
+.pagination .page-item .page-link {
+  color: #f6bf3e;
+  font-weight: 600;
+}
+
+.pagination .page-item.disabled {
+  cursor: not-allowed;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #f6bf3e;
+  border-color: #f6bf3e;
+}
+
+@import 'node_modules/bootstrap/scss/bootstrap';
