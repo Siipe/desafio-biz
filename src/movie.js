@@ -15,26 +15,28 @@ export default class Movie {
     original_language,
     genre_ids,
     vote_average,
+    favorite,
   }) {
     this.id = id;
     this.title = title;
-    this.originalTitle = original_title;
-    this.releaseDate = moment(release_date);
+    this.original_title = original_title;
+    this.release_date = moment(release_date);
     this.popularity = popularity;
     this.overview = overview;
-    this.voteCount = vote_count;
-    this.posterPath = poster_path;
-    this.originalLanguage = original_language;
-    this.genreIds = genre_ids;
-    this.voteAverage = vote_average;
+    this.vote_count = vote_count;
+    this.poster_path = poster_path;
+    this.original_language = original_language;
+    this.genre_ids = genre_ids;
+    this.vote_average = vote_average;
+    this.favorite = Boolean(favorite);
   }
 
   /**
    * Checks whether the movie has a poster path
    * @returns {Boolean}
    */
-  hasPoster() {
-    return Boolean(this.posterPath);
+  get hasPoster() {
+    return Boolean(this.poster_path);
   }
 
   /**
@@ -43,7 +45,7 @@ export default class Movie {
    * @returns {string}
    */
   getFormattedDate(pattern = 'DD/MM/YYYY') {
-    return this.releaseDate.format(pattern);
+    return this.release_date.format(pattern);
   }
 
   /**
@@ -51,11 +53,11 @@ export default class Movie {
    * @param {string} size
    * @returns {string|null}
    */
-  getImagePathWithSize(size = 'w92') {
-    if (!this.hasPoster()) {
+  getImagePathWithSize(size = 'w154') {
+    if (!this.hasPoster) {
       return null;
     }
-    const validSize = validSizes.includes(size) ? size : 'w92';
-    return `${validSize}${this.posterPath}`;
+    const validSize = validSizes.includes(size) ? size : 'w154';
+    return `${validSize}${this.poster_path}`;
   }
 }
