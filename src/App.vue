@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import BizHeader from './components/BizHeader.vue';
+import BizHeader from './shared/BizHeader.vue';
 
 export default {
   components: {

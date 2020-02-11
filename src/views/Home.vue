@@ -11,8 +11,8 @@
   </biz-container>
 </template>
 <script>
-import moviesMixin from '../movies-mixin';
-import service from '../service';
+import moviesMixin from '../movie/movies-mixin';
+import service from '../movie/service';
 
 export default {
   mixins: [moviesMixin],

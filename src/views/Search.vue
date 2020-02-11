@@ -1,13 +1,25 @@
 <template>
   <biz-container :title="title">
-    <b-row v-if="!movies.length">
+    <b-row>
+      <b-col cols="12">
+        <biz-filter @biz-filter-result="filter" ref="filter">
+          <biz-text-filter
+            name="query"
+            label="Simple query"
+            isDefault
+            hideOperator
+          />
+        </biz-filter>
+      </b-col>
+    </b-row>
+    <b-row v-if="!movies.length && searched">
       <b-col cols="12">
         <p class="text-secondary">
           <b-icon icon="alert-triangle-fill" font-scale="1.3" /> No results found.
         </p>
       </b-col>
     </b-row>
-    <div v-else>
+    <div v-if="movies.length">
       <b-row>
         <b-col cols="12">
           <b-pagination
@@ -35,14 +47,14 @@
   </biz-container>
 </template>
 <script>
-import moviesMixin from '../movies-mixin';
-import service from '../service';
+import moviesMixin from '../movie/movies-mixin';
+import service from '../movie/service';
 
 export default {
   mixins: [moviesMixin],
   data() {
     return {
-      title: 'Movie search',
+      searched: false,
       pagination: {
         currentPage: 1,
         total: 0,
@@ -54,17 +66,35 @@ export default {
       this.search(val);
     }
   },
-  methods: {
-    async search(page = 1) {
-      const params = new URLSearchParams({ query: 'sdfbsdfbsdyfvbsdyifvsadyfbsdyufbs', page });
-      const response = await service.search(params);
-      this.movies = response.results;
-      console.log('response', response);
-      this.pagination.total = response.total_results;
+  computed: {
+    title() {
+      if (!this.searched) {
+        return 'Search movies';
+      }
+      return `Showing ${this.movies.length} out of ${this.pagination.total} ${
+        this.pagination.total === 1 ? 'movie' : 'movies'
+      }`;
     },
   },
-  created() {
-    this.search();
-  }
+  methods: {
+    filter(urlSearchParams) {
+      this.search(1, urlSearchParams);
+    },
+    async search(page = 1, urlSearchParams) {
+      const params = urlSearchParams || this.$refs.filter.getQueryString();
+      if (!params.has('query')) {
+        return;
+      }
+      params.set('page', page);
+      try {
+        const response = await service.search(params);
+        this.searched = true;
+        this.movies = response.results;
+        this.pagination.total = response.total_results;
+      } catch (error) {
+        console.log('FAILED: ', error.message);
+      }
+    },
+  },
 }
 </script>

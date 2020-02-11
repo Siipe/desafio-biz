@@ -15,8 +15,8 @@
   </biz-container>
 </template>
 <script>
-import BizMovie from '../components/BizMovie.vue';
-import service from '../service';
+import BizMovie from '../shared/BizMovie.vue';
+import service from '../movie/service';
 
 export default {
   components: {
