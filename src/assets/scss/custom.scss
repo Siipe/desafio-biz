@@ -1,23 +1,22 @@
 $theme-colors: (
   'biz-navbar': #FFF,
   'fav-star-checked': #DE963B,
-  'fav-star-unchecked': #AAA,
+  'fav-star-unchecked': #AAA
 );
 
-$body-bg: #F9F9F9;
+$body-bg: #EEE;
 
-.pagination .page-item .page-link {
-  color: #f6bf3e;
-  font-weight: 600;
+.pagination .page-item .page-link, .btn.btn-warning {
+  color: #F6BF3E;
 }
 
 .pagination .page-item.disabled {
   cursor: not-allowed;
 }
 
-.pagination .page-item.active .page-link {
-  background-color: #f6bf3e;
-  border-color: #f6bf3e;
+.pagination .page-item.active .page-link, .btn.btn-warning {
+  background-color: #F6BF3E;
+  border-color: #F6BF3E;
 }
 
-@import 'node_modules/bootstrap/scss/bootstrap';
+@import '~bootstrap/scss/bootstrap';
