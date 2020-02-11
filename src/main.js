@@ -3,14 +3,17 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {Vue2Storage} from 'vue2-storage'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-import ElementUI from 'element-ui';
 import moment from 'moment-timezone';
+import _ from 'lodash';
 import App from './App.vue';
 import router from './router';
-import BizContainer from './components/BizContainer.vue';
+import BizContainer from './shared/BizContainer.vue';
+import BizFilter from './shared/BizFilter';
 
 moment.tz.setDefault('America/Sao_Paulo');
 moment.locale('pt-br');
+
+Object.defineProperty(Vue.prototype, '$_', { value: _ });
 
 Vue.config.productionTip = false;
 
@@ -18,7 +21,7 @@ Vue.use(VueRouter);
 Vue.use(Vue2Storage);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
-Vue.use(ElementUI);
+Vue.use(BizFilter);
 
 Vue.component('BizContainer', BizContainer);
 
