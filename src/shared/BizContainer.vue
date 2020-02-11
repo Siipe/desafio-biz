@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid="sm">
+  <b-container fluid="sm" style="margin-top: 100px">
     <h5 class="font-weight-light text-center text-lg-left mt-4 mb-0">
       <strong>{{ title }}</strong>
     </h5>

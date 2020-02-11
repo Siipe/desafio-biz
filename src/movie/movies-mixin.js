@@ -1,4 +1,4 @@
-import BizMovie from './components/BizMovie.vue';
+import BizMovie from '../shared/BizMovie.vue';
 
 export default {
   components: {

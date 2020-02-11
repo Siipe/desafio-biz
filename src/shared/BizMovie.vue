@@ -17,7 +17,7 @@
   </b-col>
 </template>
 <script>
-import Movie from '../movie';
+import Movie from '../movie/movie';
 
 export default {
   props: {
