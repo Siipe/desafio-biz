@@ -10,7 +10,7 @@ export default {
       type: String,
       required: true,
     },
-    isDefault: {
+    isRequired: {
       type: Boolean,
       required: false,
       default: false,
@@ -37,6 +37,7 @@ export default {
       visible: false,
       value: '',
       operator: '',
+      state: null,
     };
   },
   watch: {
@@ -57,14 +58,21 @@ export default {
     },
   },
   methods: {
+    isValid() {
+      if (this.isRequired && ['', null, undefined].includes(this.value)) {
+        this.state = false;
+        return false;
+      }
+      this.state = null;
+      return true;
+    },
     getResult() {
-      const { operator } = this;
       const key = [
         filterOperators.EQUAL_TO.value,
         filterOperators.EQUAL_TO_MULTIPLE.value,
-      ].includes(operator) || !operator
+      ].includes(this.operator) || !this.operator
         ? this.name
-        : `${this.name}[${operator}]`;
+        : `${this.name}[${this.operator}]`;
 
       if (this.$_.isArray(this.value)) {
         return this.value.map(value => ({
@@ -87,7 +95,7 @@ export default {
       }
     },
     reset() {
-      this.visible = this.isDefault;
+      this.visible = this.isRequired;
       this.operator = this.defaultValidOperator;
       this.value = this.defaultValue;
     },
