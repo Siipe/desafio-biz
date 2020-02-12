@@ -19,4 +19,18 @@ $body-bg: #EEE;
   border-color: #F6BF3E;
 }
 
+.modal-backdrop {
+  opacity: .5;
+}
+
+.modal-body.biz-modal-body {
+  padding: 0;
+}
+
+@media (min-width: 720px) {
+  .modal-dialog.modal-lg {
+    max-width: 690px;
+  }
+}
+
 @import '~bootstrap/scss/bootstrap';

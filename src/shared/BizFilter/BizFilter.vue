@@ -14,7 +14,7 @@
         <slot></slot>
         <div
           :class="!hasSelectedFilters ? 'biz-filter-buttons' : ''">
-          <b-button size="sm" variant="warning" @click="filter" class="text-white">Filter</b-button>
+          <b-button size="sm" variant="warning" @click="filter" class="text-white mb-3">Filter</b-button>
         </div>
       </b-col>
       <b-col
@@ -41,7 +41,9 @@
               v-for="filter in filters"
               :key="filter.name"
               :value="filter.name"
-              :disabled="filter.visible">{{ filter.label }}</b-form-select-option>
+              :disabled="filter.visible">{{ filter.visible
+                ? `${filter.label} (already added)`
+                : filter.label }}</b-form-select-option>
           </b-form-select>
         </div>
       </b-col>
@@ -92,6 +94,9 @@ export default {
       this.$set(this, 'selectedFilter', '');
     },
     getQueryString() {
+      if(this.filters.some((filter) => !filter.isValid())) {
+        return false;
+      }
       const url = new URLSearchParams();
       this.filledFilters
         .map(filter => filter.getResult())
@@ -125,7 +130,7 @@ export default {
 </script>
 <style lang="scss" scoped>
   .biz-filter-add-filter {
-    margin-top: 1px;
+    margin-top: -2px;
     text-align: left;
   }
   .biz-filter-add-filter .biz-filter-filters {
@@ -137,7 +142,6 @@ export default {
     text-align: left;
   }
   .biz-filter-container {
-    
     & /deep/ .biz-filter-remove {
       font-size: 0.9em;
       cursor: pointer;
@@ -152,7 +156,7 @@ export default {
       vertical-align: top;
       margin-right: 5px;
     }
-    & /deep/ .biz-filter-value {
+    & /deep/ .biz-filter-value, .biz-filter-value-full {
       width: 100%;
       margin-top: 10px;
       display: inline-block;
@@ -172,7 +176,10 @@ export default {
       }
       & /deep/ .biz-filter-value {
         width: 70%;
-        max-width: 400px;
+        margin-top: 0;
+      }
+      & /deep/ .biz-filter-value-full {
+        width: 70%;
         margin-top: 0;
       }
     }

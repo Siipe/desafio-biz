@@ -1,9 +1,10 @@
 <template>
-  <div v-if="visible" class="mb-2">
-    <h6 class="biz-filter-titulo">
+  <div v-if="visible" class="mb-3">
+    <h6 class="biz-filter-title">
+      <span v-if="isRequired" class="text-danger">*</span>
       {{ label }}
       <button
-        v-if="!isDefault"
+        v-if="!isRequired"
         type="button"
         title="Remove filter"
         class="biz-filter-remove text-danger"
@@ -26,9 +27,10 @@
         </b-form-select>
         <b-form-input
           v-model="value"
+          :state="state"
           size="sm"
           :placeholder="`Filter by ${label}`"
-          class="biz-filter-value"
+          :class="hideOperator ? 'biz-filter-value-full' : 'biz-filter-value'"
           @keyup.enter.native="dispatch('f.filter.enter')" />
       </b-col>
     </b-row>
