@@ -12,11 +12,8 @@
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.4.0",
     "core-js": "^3.4.4",
-    "element-ui": "^2.13.0",
     "lodash": "^4.17.15",
     "moment-timezone": "^0.5.27",
-    "node-sass": "^4.13.1",
-    "sass-loader": "^8.0.2",
     "vue": "^2.6.10",
     "vue-router": "^3.1.5",
     "vue2-storage": "^5.0.0"
@@ -28,6 +25,8 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
