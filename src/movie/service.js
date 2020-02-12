@@ -27,9 +27,9 @@ const prepareMovieObjects = (movies = []) => {
  * @returns {object}
  */
 const getPopular = async () => {
-  const result = await instance.get('movie/popular');
-  result.data.results = prepareMovieObjects(result.data.results);
-  return result.data;
+  const response = await instance.get('movie/popular');
+  response.data.results = prepareMovieObjects(response.data.results);
+  return response.data;
 }
 
 /**
@@ -37,13 +37,19 @@ const getPopular = async () => {
  * @returns {object}
  */
 const search = async (params) => {
-  const result = await instance.get('search/movie', { params });
-  result.data.results = prepareMovieObjects(result.data.results);
-  return result.data;
+  const response = await instance.get('search/movie', { params });
+  response.data.results = prepareMovieObjects(response.data.results);
+  return response.data;
 }
 
+const getLanguages = async () => {
+  const response = await instance.get('configuration/languages');
+  return response.data;
+};
+
 export default {
+  prepareMovieObjects,
   getPopular,
   search,
-  prepareMovieObjects,
+  getLanguages,
 };
