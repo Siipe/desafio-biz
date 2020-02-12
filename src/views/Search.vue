@@ -6,12 +6,32 @@
           <biz-text-filter
             name="query"
             label="Simple query"
-            isDefault
+            isRequired
             hideOperator
+          />
+          <biz-combo-filter
+            name="language"
+            label="Language"
+            hideOperator
+            :options="languages"
+            defaultValue="pt"
+          />
+          <biz-number-filter
+            name="year"
+            label="Year"
+            hideOperator
+            integerOnly
+          />
+          <biz-number-filter
+            name="primary_release_year"
+            label="Primary release year"
+            hideOperator
+            integerOnly
           />
         </biz-filter>
       </b-col>
     </b-row>
+    <hr class="mt-2 mb-4">
     <b-row v-if="!movies.length && searched">
       <b-col cols="12">
         <p class="text-secondary">
@@ -50,15 +70,18 @@
 import moviesMixin from '../movie/movies-mixin';
 import service from '../movie/service';
 
+const initialPage = 1;
+
 export default {
   mixins: [moviesMixin],
   data() {
     return {
       searched: false,
       pagination: {
-        currentPage: 1,
+        currentPage: initialPage,
         total: 0,
       },
+      languages: [],
     };
   },
   watch: {
@@ -78,23 +101,38 @@ export default {
   },
   methods: {
     filter(urlSearchParams) {
-      this.search(1, urlSearchParams);
+      this.search(initialPage, urlSearchParams);
     },
-    async search(page = 1, urlSearchParams) {
+    async search(page = initialPage, urlSearchParams) {
       const params = urlSearchParams || this.$refs.filter.getQueryString();
-      if (!params.has('query')) {
+      if (!params) {
         return;
       }
       params.set('page', page);
       try {
         const response = await service.search(params);
+
         this.searched = true;
         this.movies = response.results;
+        this.pagination.currentPage = page;
         this.pagination.total = response.total_results;
       } catch (error) {
         console.log('FAILED: ', error.message);
       }
     },
+  },
+  async created() {
+    try {
+      const languages = await service.getLanguages();
+      this.languages = languages.map((lang) => ({
+        label: lang.name
+          ? `${lang.name} (${lang.english_name})`
+          : lang.english_name,
+        value: lang.iso_639_1,
+      }));
+    } catch (error) {
+      console.log('FAILED: ', error.message);
+    }
   },
 }
 </script>
