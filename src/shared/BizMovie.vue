@@ -1,26 +1,36 @@
 <template>
-  <b-col xl="2" lg="3" md="4" sm="5">
-    <div class="biz-movie-container mb-3" :style="`width: ${defaultWidth}px`">
-      <button
-        :id="`watchlist-star${movie.id}`"
-        @click="handleFavorite"
-        class="biz-btn-fav">
-        <b-icon icon="star-fill" :variant="iconVariant" />
-      </button>
-      <b-popover :target="`watchlist-star${movie.id}`" triggers="hover" placement="top">
-        {{ movie.favorite ? 'Remove from' : 'Add to' }} the <strong> watchlist</strong>
-      </b-popover>
-      <b-img
-        :src="src"
-        :alt="movie.title"
-        @click="handleSelected"
-        class="biz-movie-img"
-        thumbnail />
-    </div>
-
+  <b-col cols="6" sm="4" md="3" lg="2" xl="2" class="mb-3">
+    <button
+      :id="`watchlist-star${movie.id}`"
+      @click="handleFavorite"
+      class="biz-btn-fav">
+      <b-icon icon="star-fill" :variant="iconVariant" />
+    </button>
+    <b-popover :target="`watchlist-star${movie.id}`" triggers="hover" placement="top">
+      {{ movie.favorite ? 'Remove from' : 'Add to' }} the <strong> watchlist</strong>
+    </b-popover>
+    <b-img
+      v-if="movie.hasPoster"
+      :src="src"
+      :alt="movie.title"
+      fluid-grow
+      @click="handleSelected"
+      class="biz-movie-img"
+      thumbnail />
+    <b-img
+      v-else
+      :alt="movie.title"
+      blank
+      blank-color="#CCC"
+      fluid-grow
+      :width="imgWidth"
+      :height="1.5 * imgWidth"
+      @click="handleSelected"
+      class="biz-movie-img"
+      thumbnail />
     <b-modal
-      v-if="visible"
-      v-model="visible"
+      v-if="modalOpen"
+      v-model="modalOpen"
       size="lg"
       centered
       button-size="sm"
@@ -31,7 +41,20 @@
       <b-card no-body class="overflow-hidden">
         <b-row no-gutters>
           <b-col md="6">
-            <b-card-img :src="src" class="rounded-0" />
+            <b-card-img
+              v-if="movie.hasPoster"
+              :src="src"
+              fluid-grow
+              class="rounded-0" />
+            <b-img
+              v-else
+              :alt="movie.title"
+              blank
+              blank-color="#CCC"
+              fluid-grow
+              :width="imgWidth"
+              :height="1.5 * imgWidth"
+              class="rounded-0 card-img" />
           </b-col>
           <b-col md="6">
             <b-card-header>
@@ -40,7 +63,7 @@
                 icon="x"
                 variant="secondary"
                 font-scale="1.4"
-                @click="visible = false" />
+                @click="modalOpen = false" />
               <h3>{{ movie.title }} <small class="text-secondary">({{ movie.getFormattedDate('YYYY') }})</small></h3>
               <b-row>
                 <b-col cols="3">
@@ -87,16 +110,15 @@ export default {
   },
   data() {
     return {
-      defaultWidth: 154,
-      visible: false,
+      modalOpen: false,
     };
   },
   computed: {
+    imgWidth() {
+      return this.modalOpen ? 500 : 185;
+    },
     src() {
-      const imgWidth = this.visible ? 500 : this.defaultWidth;
-      return this.movie.hasPoster
-        ? `https://image.tmdb.org/t/p/${this.movie.getImagePathWithSize(`w${imgWidth}`)}`
-        : `https://picsum.photos/${imgWidth}/${imgWidth}/?image=20`;
+      return `https://image.tmdb.org/t/p/${this.movie.getImagePathWithSize(`w${this.imgWidth}`)}`
     },
     iconVariant() {
       return this.movie.favorite
@@ -110,7 +132,7 @@ export default {
       this.$emit(event, this.movie);
     },
     handleSelected() {
-      this.visible = true;
+      this.modalOpen = true;
     }
   },
 };
@@ -121,8 +143,8 @@ export default {
   }
   .biz-btn-fav {
     position: absolute;
-    right: 8px;
-    top: 8px;
+    right: 25px;
+    top: 10px;
     padding: 0;
     border-radius: 15px;
     border: none;
