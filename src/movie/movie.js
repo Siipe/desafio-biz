@@ -20,7 +20,9 @@ export default class Movie {
     this.id = id;
     this.title = title;
     this.original_title = original_title;
-    this.release_date = moment(release_date);
+    this.release_date = moment(release_date, moment.ISO_8601).isValid()
+      ?  moment(release_date)
+      : null;
     this.popularity = popularity;
     this.overview = overview;
     this.vote_count = vote_count;
@@ -45,7 +47,7 @@ export default class Movie {
    * @returns {string}
    */
   getFormattedDate(pattern = 'DD/MM/YYYY') {
-    return this.release_date.format(pattern);
+    return this.release_date ? this.release_date.format(pattern) : '-';
   }
 
   /**
