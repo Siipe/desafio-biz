@@ -5,7 +5,7 @@
         <biz-filter @biz-filter-result="filter" ref="filter">
           <biz-text-filter
             name="query"
-            label="Simple query"
+            label="Title"
             isRequired
             hideOperator
           />
