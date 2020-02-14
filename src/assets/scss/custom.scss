@@ -1,13 +1,15 @@
+$body-bg: #E8E8E8;
+$base-biz-yellow: #F6BF3E;
+
 $theme-colors: (
   'biz-navbar': #FFF,
-  'fav-star-checked': #DE963B,
+  'fav-star-checked': $base-biz-yellow,
   'fav-star-unchecked': #AAA
 );
 
-$body-bg: #EEE;
 
 .pagination .page-item .page-link, .btn.btn-warning {
-  color: #F6BF3E;
+  color: $base-biz-yellow;
 }
 
 .pagination .page-item.disabled {
@@ -15,8 +17,8 @@ $body-bg: #EEE;
 }
 
 .pagination .page-item.active .page-link, .btn.btn-warning {
-  background-color: #F6BF3E;
-  border-color: #F6BF3E;
+  background-color: $base-biz-yellow;
+  border-color: $base-biz-yellow;
 }
 
 .modal-backdrop {
@@ -25,6 +27,30 @@ $body-bg: #EEE;
 
 .modal-body.biz-modal-body {
   padding: 0;
+}
+
+.modal-dialog.modal-lg {
+  padding-left: 0;
+}
+
+#nprogress {
+  .bar {
+    background: $base-biz-yellow;
+  }
+}
+
+#nprogress {
+  .peg {
+    -webkit-box-shadow: 0 0 10px $base-biz-yellow, 0 0 5px $base-biz-yellow;
+    box-shadow: 0 0 10px $base-biz-yellow, 0 0 5px $base-biz-yellow;
+  }
+}
+
+#nprogress {
+  .spinner-icon {
+    border-top-color: $base-biz-yellow;
+    border-left-color: $base-biz-yellow;
+  }
 }
 
 @media (min-width: 720px) {
