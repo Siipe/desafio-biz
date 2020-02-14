@@ -1,3 +1,4 @@
+import 'nprogress/nprogress.css';
 import './assets/scss/custom.scss';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
