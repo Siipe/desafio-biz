@@ -6,12 +6,11 @@
           <b-icon icon="alert-triangle-fill" font-scale="1.3" /> Your watchlist is empty.
         </p>
       </b-col>
-      <biz-movie
-        v-for="movie in movies"
-        :key="movie.id"
-        :movie="movie"
-        @bizmovieRemoveFavorite="removeFromFavoriteAndUpdate" />
     </b-row>
+    <biz-movie-set
+      :movies="movies"
+      @bizmovieRemoveFavorite="removeFromFavoriteAndUpdate"
+      @bizmovieAddFavorite="addToFavorite" />
   </biz-container>
 </template>
 <script>

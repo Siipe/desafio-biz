@@ -54,14 +54,15 @@
           ></b-pagination>
         </b-col>
       </b-row>
-      <b-row>
-        <biz-movie
-          v-for="movie in movies"
-          :key="movie.id"
-          :movie="movie"
-          @bizmovieRemoveFavorite="removeFromFavorite"
-          @bizmovieAddFavorite="addToFavorite" />
-      </b-row>
+      <biz-movie-set
+        :movies="movies"
+        checkPagination
+        :currentPage="pagination.currentPage"
+        :totalResults="pagination.total"
+        @bizmovieRemoveFavorite="removeFromFavorite"
+        @bizmovieAddFavorite="addToFavorite"
+        @bizMovieCarouselPageChange="handleCarouselPageChange"
+        ref="movieSet" />
     </div>
   </biz-container>
 </template>
@@ -85,7 +86,7 @@ export default {
   },
   watch: {
     'pagination.currentPage': function(val) {
-      this.search(val);
+     this.search(val);
     }
   },
   computed: {
@@ -99,11 +100,15 @@ export default {
     },
   },
   methods: {
-    filter(urlSearchParams) {
-      this.search(initialPage, urlSearchParams);
+    filter() {
+      if (this.pagination.currentPage === initialPage) {
+        this.search();
+        return;
+      }
+      this.$set(this.pagination, 'currentPage', initialPage);
     },
-    async search(page = initialPage, urlSearchParams) {
-      const params = urlSearchParams || this.$refs.filter.getQueryString();
+    async search(page = initialPage) {
+      const params = this.$refs.filter.getQueryString();
       if (!params) {
         return;
       }
@@ -112,12 +117,15 @@ export default {
         const response = await service.search(params);
 
         this.searched = true;
-        this.movies = response.results;
-        this.pagination.currentPage = page;
-        this.pagination.total = response.total_results;
+        this.$set(this, 'movies', response.results);
+        this.$set(this.pagination, 'total', response.total_results);
+        this.checkFavorites();
       } catch (error) {
         this.$notifyError(error);
       }
+    },
+    async handleCarouselPageChange(page) {
+      this.$set(this.pagination, 'currentPage', page);
     },
   },
   async created() {

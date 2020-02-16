@@ -1,23 +1,18 @@
-import BizMovie from '../shared/BizMovie.vue';
+import BizMovieSet from '../shared/BizMovieSet.vue';
 
 export default {
   components: {
-    BizMovie,
+    BizMovieSet,
   },
   data() {
     return {
       movies: [],
     };
   },
-  watch: {
-    movies() {
-      this.checkFavorites();
-    },
-  },
   methods: {
     checkFavorites() {
       (this.$storage.get('biz-watchlist') || []).forEach((movie) => {
-        const match = this.movies.find((mv) => mv.id === movie.id && !movie.favorite);
+        const match = this.movies.find((mv) => mv.id === movie.id);
         if (!match) {
           return;
         }

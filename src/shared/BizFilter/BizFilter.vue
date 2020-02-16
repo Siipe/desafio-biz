@@ -1,23 +1,26 @@
 <template>
   <div class="biz-filter-container mb-3">
     <b-card no-body class="biz-filter-card">
-      <b-card-header
-        :header-class="headerClassNames"
+      <b-link
+        href="javascript:void(0)"
+        class="text-dark text-decoration-none"
         @click="collapseVisible = !collapseVisible">
-        <small>
-          <b-icon icon="search" font-scale="1.3" />
-        </small>
-        <span class="ml-2 mr-2">Search filters</span>
-        <small class="ml-auto">
-          <b-icon 
-            id="biz-filter-collapse"
-            :icon="collapseVisible ? 'arrows-collapse' : 'arrows-expand'"
-            font-scale="1.3" />
-          <b-popover target="biz-filter-collapse" triggers="hover" placement="bottom">
-            {{ collapseVisible ? 'Click to collapse' : 'Click to expand' }}
-          </b-popover>
-        </small>
-      </b-card-header>
+        <b-card-header :header-class="headerClassNames">
+          <small>
+            <b-icon icon="search" font-scale="1.3" />
+          </small>
+          <span class="ml-2 mr-2">Search filters</span>
+          <small class="ml-auto">
+            <b-icon 
+              id="biz-filter-collapse"
+              :icon="collapseVisible ? 'arrows-collapse' : 'arrows-expand'"
+              font-scale="1.3" />
+            <b-popover target="biz-filter-collapse" triggers="hover" placement="bottom">
+              Click to <strong>{{ collapseVisible ? 'collapse' : 'expand' }}</strong>
+            </b-popover>
+          </small>
+        </b-card-header>
+      </b-link>
       <b-collapse v-model="collapseVisible" class="mt-2">
         <b-card-body body-class="biz-filter-card-body">
           <b-row>
@@ -137,6 +140,12 @@ export default {
     filter() {
       this.$emit('biz-filter-result', this.getQueryString());
     },
+    expand() {
+      this.collapseVisible = true;
+    },
+    collapse() {
+      this.collapseVisible = false;
+    },
   },
   created() {
     this.$on('biz.filter.addFilter', (filter) => {
@@ -193,7 +202,6 @@ export default {
       cursor: pointer;
       border: none;
       background: none;
-      outline: none;
     }
     & /deep/ .biz-filter-operator {
       box-sizing: border-box;

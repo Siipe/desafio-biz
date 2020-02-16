@@ -25,6 +25,7 @@ export default {
       this.$root.$bvToast.toast([nodeMessage], {
         title: [nodeTitle],
         solid: true,
+        toaster: 'b-toaster-bottom-left',
         autoHideDelay,
         append: false,
       });
