@@ -21,7 +21,7 @@ export default {
       const request = await service.getPopular();
       this.movies = request.results.slice(0, 12);
     } catch (error) {
-      console.log('FAILED: ', error.message);
+      this.$notifyError(error);
     }
   },
 }

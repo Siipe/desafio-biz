@@ -31,7 +31,6 @@
         </biz-filter>
       </b-col>
     </b-row>
-    <hr class="mt-2 mb-4">
     <b-row v-if="!movies.length && searched">
       <b-col cols="12">
         <p class="text-secondary">
@@ -92,7 +91,7 @@ export default {
   computed: {
     title() {
       if (!this.searched) {
-        return 'Search movies';
+        return 'Search for a movie';
       }
       return `Showing ${this.movies.length} out of ${this.pagination.total} ${
         this.pagination.total === 1 ? 'movie' : 'movies'
@@ -117,7 +116,7 @@ export default {
         this.pagination.currentPage = page;
         this.pagination.total = response.total_results;
       } catch (error) {
-        console.log('FAILED: ', error.message);
+        this.$notifyError(error);
       }
     },
   },
@@ -131,7 +130,7 @@ export default {
         value: lang.iso_639_1,
       }));
     } catch (error) {
-      console.log('FAILED: ', error.message);
+      this.$notifyError(error);
     }
   },
 }

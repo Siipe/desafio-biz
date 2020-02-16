@@ -34,7 +34,6 @@
       size="lg"
       centered
       button-size="sm"
-      no-fade
       hide-header
       hide-footer
       body-class="biz-modal-body">
@@ -59,11 +58,15 @@
           <b-col md="6">
             <b-card-header>
               <b-icon
-                style="cursor: pointer; position: absolute; top: 4px; right: 4px"
+                :id="`btn-close${movie.id}`"
                 icon="x"
                 variant="secondary"
                 font-scale="1.4"
-                @click="modalOpen = false" />
+                @click="modalOpen = false"
+                style="cursor: pointer; position: absolute; top: 4px; right: 4px" />
+                <b-popover :target="`btn-close${movie.id}`" triggers="hover" placement="left">
+                  Close
+                </b-popover>
               <h3>{{ movie.title }} <small class="text-secondary">({{ movie.getFormattedDate('YYYY') }})</small></h3>
               <b-row>
                 <b-col cols="3">

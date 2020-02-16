@@ -17,7 +17,7 @@ export default {
   methods: {
     checkFavorites() {
       (this.$storage.get('biz-watchlist') || []).forEach((movie) => {
-        const match = this.movies.find((mv) => mv.id === movie.id);
+        const match = this.movies.find((mv) => mv.id === movie.id && !movie.favorite);
         if (!match) {
           return;
         }
@@ -25,15 +25,25 @@ export default {
       });
     },
     removeFromFavorite(movie) {
-      movie.favorite = false;
-      const watchlist = this.$storage.pull('biz-watchlist') || [];
-      this.$storage.set('biz-watchlist', watchlist.filter((mv) => mv.id !== movie.id));
+      try {
+        movie.favorite = false;
+        const watchlist = this.$storage.pull('biz-watchlist') || [];
+        this.$storage.set('biz-watchlist', watchlist.filter((mv) => mv.id !== movie.id));
+        this.$notifySuccess(`Movie "${movie.title}" was removed from your watchlist.`);
+      } catch (error) {
+        this.$notifyError(error);
+      }
     },
     addToFavorite(movie) {
-      movie.favorite = true;
-      const watchlist = this.$storage.pull('biz-watchlist') || [];
-      watchlist.push(movie);
-      this.$storage.set('biz-watchlist', watchlist);
+      try {
+        movie.favorite = true;
+        const watchlist = this.$storage.pull('biz-watchlist') || [];
+        watchlist.push(movie);
+        this.$storage.set('biz-watchlist', watchlist);
+        this.$notifySuccess(`Movie "${movie.title}" was added to your watchlist.`);
+      } catch (error) {
+        this.$notifyError(error);
+      }
     },
   },
 };

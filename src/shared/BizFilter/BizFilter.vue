@@ -1,53 +1,67 @@
 <template>
-  <div class="biz-filter-container">
-    <template slot="title">
-      <b-icon icon="search" font-scale="1.3" /> Search filters
-    </template>
-    <b-row>
-      <b-col
-        cols="12"
-        xl="8"
-        lg="8"
-        md="12"
-        sm="12"
-        :style="!hasSelectedFilters ? 'position: relative;' : ''">
-        <slot></slot>
-        <div
-          :class="!hasSelectedFilters ? 'biz-filter-buttons' : ''">
-          <b-button size="sm" variant="warning" @click="filter" class="text-white mb-3">Filter</b-button>
-        </div>
-      </b-col>
-      <b-col
-        cols="12"
-        xl="4"
-        lg="4"
-        md="12"
-        sm="12"
-        class="biz-filter-add-filter">
-        <div style="text-left">
-          <h6>Add filter</h6>
-        </div>
-        <div>
-          <b-form-select
-            v-model="selectedFilter"
-            size="sm"
-            @change="handleFilterPick()"
-            :disabled="!hasFilters"
-            class="mb-2 biz-filter-filters">
-            <template v-slot:first>
-              <b-form-select-option value="" disabled>-- Pick a filter --</b-form-select-option>
-            </template>
-            <b-form-select-option
-              v-for="filter in filters"
-              :key="filter.name"
-              :value="filter.name"
-              :disabled="filter.visible">{{ filter.visible
-                ? `${filter.label} (already added)`
-                : filter.label }}</b-form-select-option>
-          </b-form-select>
-        </div>
-      </b-col>
-    </b-row>
+  <div class="biz-filter-container mb-3">
+    <b-card no-body class="biz-filter-card">
+      <b-card-header
+        :header-class="headerClassNames"
+        @click="collapseVisible = !collapseVisible">
+        <small>
+          <b-icon icon="search" font-scale="1.3" />
+        </small>
+        <span class="ml-2 mr-2">Search filters</span>
+        <small class="ml-auto">
+          <b-icon 
+            id="biz-filter-collapse"
+            :icon="collapseVisible ? 'arrows-collapse' : 'arrows-expand'"
+            font-scale="1.3" />
+          <b-popover target="biz-filter-collapse" triggers="hover" placement="bottom">
+            {{ collapseVisible ? 'Click to collapse' : 'Click to expand' }}
+          </b-popover>
+        </small>
+      </b-card-header>
+      <b-collapse v-model="collapseVisible" class="mt-2">
+        <b-card-body body-class="biz-filter-card-body">
+          <b-row>
+            <b-col cols="12" xl="8" lg="8" md="12" sm="12"
+              :style="!hasSelectedFilters ? 'position: relative;' : ''">
+              <slot></slot>
+              <div :class="!hasSelectedFilters ? 'biz-filter-buttons' : ''">
+                <b-button size="sm" variant="warning" @click="filter" class="text-white mb-3">Filter</b-button>
+              </div>
+            </b-col>
+            <b-col
+              cols="12"
+              xl="4"
+              lg="4"
+              md="12"
+              sm="12"
+              class="biz-filter-add-filter">
+              <div style="text-left">
+                <h6>Add filter</h6>
+              </div>
+              <div>
+                <b-form-select
+                  v-model="selectedFilter"
+                  size="sm"
+                  @change="handleFilterPick()"
+                  :disabled="!hasFilters"
+                  class="mb-2 biz-filter-filters">
+                  <template v-slot:first>
+                    <b-form-select-option value="" disabled>-- Pick a filter --</b-form-select-option>
+                  </template>
+                  <b-form-select-option
+                    v-for="filter in filters"
+                    :key="filter.name"
+                    :value="filter.name"
+                    :disabled="filter.visible">{{ filter.visible
+                      ? `${filter.label} (already added)`
+                      : filter.label }}</b-form-select-option>
+                </b-form-select>
+              </div>
+            </b-col>
+          </b-row>
+        </b-card-body>
+      </b-collapse>
+    </b-card>
   </div>
 </template>
 <script>
@@ -58,6 +72,7 @@ export default {
     return {
       filters: [],
       selectedFilter: '',
+      collapseVisible: true,
     };
   },
   computed: {
@@ -80,6 +95,18 @@ export default {
         }
         return true;
       });
+    },
+    headerClassNames() {
+      const classNames = [
+        'd-flex',
+        'flex-grow-1',
+        'align-items-baseline',
+        'biz-filter-card-header',
+      ];
+      if (!this.collapseVisible) {
+        classNames.push('biz-no-border');
+      }
+      return classNames;
     },
   },
   methods: {
@@ -129,17 +156,36 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+  .biz-filter-card {
+    background: none;
+    border-radius: 0;
+  }
+  .biz-filter-card-header {
+    padding: 0.4rem;
+    border-radius: 0;
+    cursor: pointer;
+  }
+  .biz-filter-card-header.biz-no-border {
+    border: none;
+  }
+  .biz-filter-card-body {
+    padding: 1rem;
+  }
   .biz-filter-add-filter {
     margin-top: -2px;
     text-align: left;
   }
-  .biz-filter-add-filter .biz-filter-filters {
-    width: 100%;
+  .biz-filter-add-filter {
+    .biz-filter-filters {
+      width: 100%;
+    }
   }
-  .biz-filter-add-filter h6 {
-    width: 100%;
-    display: inline-block;
-    text-align: left;
+  .biz-filter-add-filter {
+    h6 {
+      width: 100%;
+      display: inline-block;
+      text-align: left;
+    }
   }
   .biz-filter-container {
     & /deep/ .biz-filter-remove {

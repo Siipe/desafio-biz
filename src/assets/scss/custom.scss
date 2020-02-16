@@ -9,7 +9,7 @@ $theme-colors: (
 
 
 .pagination .page-item .page-link, .btn.btn-warning {
-  color: $base-biz-yellow;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .pagination .page-item.disabled {
@@ -19,10 +19,6 @@ $theme-colors: (
 .pagination .page-item.active .page-link, .btn.btn-warning {
   background-color: $base-biz-yellow;
   border-color: $base-biz-yellow;
-}
-
-.modal-backdrop {
-  opacity: .5;
 }
 
 .modal-body.biz-modal-body {
@@ -60,3 +56,4 @@ $theme-colors: (
 }
 
 @import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-vue/src/index';

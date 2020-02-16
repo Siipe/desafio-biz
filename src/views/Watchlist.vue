@@ -10,32 +10,27 @@
         v-for="movie in movies"
         :key="movie.id"
         :movie="movie"
-        @bizmovieRemoveFavorite="removeFromFavorite" />
+        @bizmovieRemoveFavorite="removeFromFavoriteAndUpdate" />
     </b-row>
   </biz-container>
 </template>
 <script>
-import BizMovie from '../shared/BizMovie.vue';
+import moviesMixin from '../movie/movies-mixin';
 import service from '../movie/service';
 
 export default {
-  components: {
-    BizMovie,
-  },
-  data() {
-    return {
-      movies: [],
-    };
-  },
+  mixins: [moviesMixin],
   methods: {
     fetchWatchlist() {
       this.movies = service.prepareMovieObjects(this.$storage.get('biz-watchlist'));
     },
-    removeFromFavorite(movie) {
-      movie.favorite = false;
-      const watchlist = this.$storage.pull('biz-watchlist');
-      this.$storage.set('biz-watchlist', watchlist.filter((mv) => mv.id !== movie.id));
-      this.fetchWatchlist();
+    removeFromFavoriteAndUpdate(movie) {
+      try {
+        this.removeFromFavorite(movie);
+        this.fetchWatchlist();
+      } catch (error) {
+        this.$notifyError(error);
+      }
     },
   },
   created() {
